@@ -19,7 +19,7 @@ body {
 }
 
 .tower {
-    background-color: rgb(184, 51, 251);
+    background-color: rgba(219, 186, 249, .4);
     border-width: 4px;
     border-color: white;
     border-radius: inherit;
