@@ -1,0 +1,51 @@
+body {
+    font-family:Arial, Helvetica, sans-serif;
+    color:indigo;
+}
+
+.container {
+    background-color:darkorange;
+    margin: 5px auto;
+    padding: 5px;
+    border-radius: 2px;
+    max-width: 95vw;
+}
+
+.game {
+    background-color:azure;
+    display: flex;
+    flex-wrap: nowrap;
+    border-radius: inherit;
+    text-align: center;
+}
+
+.tower {
+    background-color: rgb(184, 51, 251);
+    border-width: 4px;
+    border-color: white;
+    border-radius: inherit;
+    border-style: solid;
+    width: 200px;
+    height: 450px;
+    margin: auto;
+    flex-wrap: inherit;
+    align-content: flex-end;
+}
+
+.brick {
+    background-color: deeppink;
+    width: 98%;
+    height: 50px;
+    border-radius: inherit;
+    border-color: crimson;
+    border-width: 2px;
+    border-style: solid;
+    align-self: flex-end;
+}
+
+.number {
+    color:snow;
+    font-size: 16px;
+    margin: auto;
+    line-height: 100%;
+}
