@@ -14,7 +14,6 @@ body {
 .game {
     background-color:azure;
     display: flex;
-    flex-wrap: nowrap;
     border-radius: inherit;
     text-align: center;
 }
@@ -28,8 +27,9 @@ body {
     width: 200px;
     height: 450px;
     margin: auto;
-    flex-wrap: inherit;
+    flex-wrap: wrap;
     align-content: flex-end;
+    display: flex;
 }
 
 .brick {
@@ -40,7 +40,6 @@ body {
     border-color: crimson;
     border-width: 2px;
     border-style: solid;
-    align-self: flex-end;
 }
 
 .number {
