@@ -53,10 +53,26 @@ tower1.addEventListener("click", testMe)
 tower2.addEventListener("click", testMe)
 tower3.addEventListener("click", testMe)
 
+// move a brick
+// function moveBrick3() {
+//     this.insertBefore(brick3, brick1)
+// }
 
-function moveBrick3() {
-    this.appendChild(brick3)
-    this.appendChild(brick1)
+// tower1.addEventListener("click", moveBrick3)
+
+function moveBrick() {
+    if (selectionPresent === true) {
+        if (bricks.indexOf(selectedBrick) < bricks.indexOf(this.children[0])) {
+            this.insertBefore(selectedBrick, this.children[0])
+        }
+    }
+    console.log(bricks.indexOf(selectedBrick))
+    console.log(bricks.indexOf(this.children[0]))
+    console.log(selectedBrick)
+    console.log(this.children[0])
 }
 
-tower1.addEventListener("click", moveBrick3)
+tower1.addEventListener("click", moveBrick)
+tower2.addEventListener("click", moveBrick)
+tower3.addEventListener("click", moveBrick)
+
