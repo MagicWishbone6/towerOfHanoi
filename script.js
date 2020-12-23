@@ -60,10 +60,20 @@ tower3.addEventListener("click", testMe)
 
 // tower1.addEventListener("click", moveBrick3)
 
+// win message
+let winDiv = document.querySelector(".winner")
+
 function moveBrick() {
     if (selectionPresent === true) {
         if (bricks.indexOf(selectedBrick) < bricks.indexOf(this.children[0])) {
             this.insertBefore(selectedBrick, this.children[0])
+            if (tower3.children[0] === brick1 && tower3.children[1] === brick2 && tower3.children[2] === brick3) {
+                console.log("winner test passed")
+                tower1.style.display = "none"
+                tower2.style.display = "none"
+                tower3.style.display = "none"
+                winDiv.style.display = "flex"
+            }
         }
     }
     console.log(bricks.indexOf(selectedBrick))
