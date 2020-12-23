@@ -52,4 +52,8 @@ body {
 #resetButton {
     background-color: coral;
     outline-style: none;
+    color: white;
+    line-height: 20px;
+    height: 24px;
+    width: 30px;
 }

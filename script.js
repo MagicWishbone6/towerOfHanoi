@@ -76,6 +76,8 @@ tower1.addEventListener("click", moveBrick)
 tower2.addEventListener("click", moveBrick)
 tower3.addEventListener("click", moveBrick)
 
+
+///// Reset Button /////
 let resetButton = document.querySelector("#resetButton")
 
 // Reload everything:
