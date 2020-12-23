@@ -48,3 +48,8 @@ body {
     margin: auto;
     line-height: 100%;
 }
+
+#resetButton {
+    background-color: coral;
+    outline-style: none;
+}
