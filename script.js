@@ -8,16 +8,36 @@ let tower2 = document.querySelector("#tower2")
 let tower3 = document.querySelector("#tower3")
 
 ///// Bricks /////
-let brick1 = document.querySelector("#brick1")
-let brick2 = document.querySelector("#brick2")
-let brick3 = document.querySelector("#brick3")
+
+// let brick1 = document.querySelector("#brick1")
+// let brick2 = document.querySelector("#brick2")
+// let brick3 = document.querySelector("#brick3")
+
+class Brick {
+    constructor(id, originTower) {
+        this.isSelected = false,
+        this.isOnTop = true,
+        this.id = id
+        this.div = document.querySelector(`#${id}`)
+        this.originTower = originTower
+    }
+}
+
+var brick1 = new Brick('brick1', 'tower1')
+var brick2 = new Brick('brick2', 'tower2')
+var brick3 = new Brick('brick3', 'tower3')
+
+// Array of all Brick Divs
+let brickDivs = [brick1.div, brick2.div, brick3.div]
 
 // Array of all Bricks
 let bricks = [brick1, brick2, brick3]
 
+
 ///// Highlighting Selected Brick /////
 
 // Each click on any brick will toggle boolean selectionPresent
+
 let selectionPresent = false
 let selectedBrick = null
 
@@ -25,13 +45,26 @@ let selectedBrick = null
 // Turn highlight OFF by clicking ANY brick
 function selectBrick() {
     if (selectionPresent === true) {
-        bricks.forEach((element) => element.style.borderColor = "crimson")
+        // de-selects if one is already selected
+        brickDivs.forEach(div => div.style.borderColor = "crimson")
+        bricks.forEach(brick => {
+            brick.isSelected = false
+        })
         selectionPresent = false
         selectedBrick = null
     } else {
+        // selects if none others are selected
         this.style.borderColor = "orange"
         selectionPresent = true
         selectedBrick = this
+        bricks.forEach(brick => {
+            if (brick.id === selectedBrick.id) {
+                brick.isSelected = true
+                brick.originTower = this.parentElement.id
+
+                console.log(`${brick.originTower} is set as ${brick.id}'s origin tower`)
+            }
+        })
         console.log(`${selectedBrick.id} is selected`)
     }
     console.log(`selectionPresent is now ${selectionPresent}`)
@@ -61,13 +94,39 @@ tower3.addEventListener("click", testMe)
 // tower1.addEventListener("click", moveBrick3)
 
 function moveBrick() {
+    let oldTop = this.children[0]
     if (selectionPresent === true) {
-        if (bricks.indexOf(selectedBrick) < bricks.indexOf(this.children[0])) {
-            this.insertBefore(selectedBrick, this.children[0])
+        if (brickDivs.indexOf(selectedBrick) < brickDivs.indexOf(this.children[0])) {
+            // if selected br has a smaller brick on top of it, move that br also.
+            // only move brick if there is not a larger brick on top of it.
+            if (selectedBrick.isOnTop === true) {
+                this.insertBefore(selectedBrick, oldTop)
+                // set isOnTop = true and set isOnTop for next child = false
+                bricks.forEach(brick => {
+                    if (brick.id === oldTop.id) {
+                        brick.isOnTop = false
+                    }
+                })
+            } else {
+                let allBricksInTower = selectedBrick.originTower.children
+                let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrick))
+                brickAndBricksAboveIt.forEach(brick => {
+                    if (brickDivs.indexOf(brick) <= brickDivs.indexOf(selectedBrick)) {
+                        for (let i = brickAndBricksAboveIt.length; i <= 0; i--) {
+                            this.insertBefore(brickAndBricksAboveIt[i], this.children[0])
+                        }
+                        bricks.forEach(brick => {
+                            if (brick.id === oldTop.id) {
+                                brick.isOnTop = false
+                            }
+                        })
+                    }
+                })
+            }
         }
     }
-    console.log(bricks.indexOf(selectedBrick))
-    console.log(bricks.indexOf(this.children[0]))
+    console.log(brickDivs.indexOf(selectedBrick))
+    console.log(brickDivs.indexOf(this.children[0]))
     console.log(selectedBrick)
     console.log(this.children[0])
 }
