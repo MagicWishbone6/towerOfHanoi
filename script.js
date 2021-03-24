@@ -62,12 +62,15 @@ function selectBrick() {
                 brick.isSelected = true
                 brick.originTower = this.parentElement.id
 
-                console.log(`${brick.originTower} is set as ${brick.id}'s origin tower`)
+                // TEST //
+                // console.log(`${brick.originTower} is set as ${brick.id}'s origin tower`)
             }
         })
-        console.log(`${selectedBrick.id} is selected`)
+        // TEST //
+        // console.log(`${selectedBrick.id} is selected`)
     }
-    console.log(`selectionPresent is now ${selectionPresent}`)
+    // TEST //
+    // console.log(`selectionPresent is now ${selectionPresent}`)
 }
 
 // activate above with a click on a brick \(*^_^*)/
@@ -77,36 +80,37 @@ brick3.div.addEventListener("click", selectBrick)
 
 ///// Moving a Selected Brick /////
 
+// TEST //
 function testMe() {
     console.log(`I, ${this.id}, HAVE BEEN CLICKED`)
 }
 
+// TEST //
 // click on a tower
-tower1.addEventListener("click", testMe)
-tower2.addEventListener("click", testMe)
-tower3.addEventListener("click", testMe)
+// tower1.addEventListener("click", testMe)
+// tower2.addEventListener("click", testMe)
+// tower3.addEventListener("click", testMe)
 
 // move a brick
-// function moveBrick3() {
-//     this.insertBefore(brick3, brick1)
-// }
-
-// tower1.addEventListener("click", moveBrick3)
 
 function moveBrick() {
     let oldTop = this.children[0]
     if (selectionPresent === true) {
-        if (brickDivs.indexOf(selectedBrick) < brickDivs.indexOf(this.children[0])) {
+        if (brickDivs.indexOf(selectedBrick) < brickDivs.indexOf(this.children[0]) || this.children.length === 0) {
             // if selected br has a smaller brick on top of it, move that br also.
             // only move brick if there is not a larger brick on top of it.
             if (selectedBrick.isOnTop === true) {
-                this.insertBefore(selectedBrick, oldTop)
-                // set isOnTop = true and set isOnTop for next child = false
-                bricks.forEach(brick => {
-                    if (brick.id === oldTop.id) {
+                if (this.children.length > 0) {
+                    this.insertBefore(selectedBrick, oldTop)
+                    // set isOnTop = true and set isOnTop for next child = false
+                    bricks.forEach(brick => {
+                        if (brick.id === oldTop.id) {
                         brick.isOnTop = false
-                    }
-                })
+                        }
+                    })
+                } else {
+                    this.appendChild(selectedBrick)
+                }
             } else {
                 var allBricksInTower = []
                 bricks.forEach(brick => {
@@ -116,7 +120,9 @@ function moveBrick() {
                     }
                 })
                 let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrick) + 1)
-                console.log(brickAndBricksAboveIt)
+                // TEST //
+                // console.log(brickAndBricksAboveIt)
+
                 brickAndBricksAboveIt.forEach(brick => {
                     if (brickDivs.indexOf(brick) <= brickDivs.indexOf(this.children[0])) {
                         for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
@@ -127,6 +133,10 @@ function moveBrick() {
                                 brick.isOnTop = false
                             }
                         })
+                    } else if (this.children.length === 0) {
+                        for (let i = 0; i < brickAndBricksAboveIt.length; i++) {
+                            this.appendChild(brickAndBricksAboveIt[i])
+                        }
                     }
                 })
             }
