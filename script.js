@@ -71,9 +71,9 @@ function selectBrick() {
 }
 
 // activate above with a click on a brick \(*^_^*)/
-brick1.addEventListener("click", selectBrick)
-brick2.addEventListener("click", selectBrick)
-brick3.addEventListener("click", selectBrick)
+brick1.div.addEventListener("click", selectBrick)
+brick2.div.addEventListener("click", selectBrick)
+brick3.div.addEventListener("click", selectBrick)
 
 ///// Moving a Selected Brick /////
 
@@ -108,11 +108,18 @@ function moveBrick() {
                     }
                 })
             } else {
-                let allBricksInTower = selectedBrick.originTower.children
-                let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrick))
+                var allBricksInTower = []
+                bricks.forEach(brick => {
+                    if (brick.id === selectedBrick.id) {
+                        allBricksInTower = document.getElementById(`${brick.originTower}`).children
+                        allBricksInTower = [...allBricksInTower]
+                    }
+                })
+                let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrick) + 1)
+                console.log(brickAndBricksAboveIt)
                 brickAndBricksAboveIt.forEach(brick => {
-                    if (brickDivs.indexOf(brick) <= brickDivs.indexOf(selectedBrick)) {
-                        for (let i = brickAndBricksAboveIt.length; i <= 0; i--) {
+                    if (brickDivs.indexOf(brick) <= brickDivs.indexOf(this.children[0])) {
+                        for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
                             this.insertBefore(brickAndBricksAboveIt[i], this.children[0])
                         }
                         bricks.forEach(brick => {
@@ -125,10 +132,6 @@ function moveBrick() {
             }
         }
     }
-    console.log(brickDivs.indexOf(selectedBrick))
-    console.log(brickDivs.indexOf(this.children[0]))
-    console.log(selectedBrick)
-    console.log(this.children[0])
 }
 
 tower1.addEventListener("click", moveBrick)
