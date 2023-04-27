@@ -48,7 +48,7 @@ h1 {
     background-color: deeppink;
     width: 98%;
     height: 50px;
-    border-radius: inherit;
+    border-radius: 7px;
     border-color: crimson;
     border-width: 2px;
     border-style: solid;
@@ -59,6 +59,7 @@ h1 {
     font-size: 16px;
     margin: auto;
     line-height: 100%;
+    text-shadow: 2px 1px 2px #410101;
 }
 
 #resetButton {
