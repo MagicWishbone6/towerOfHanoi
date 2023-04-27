@@ -9,6 +9,12 @@ h1 {
     margin-left: 10px;
 }
 
+#title {
+    font-family: 'Just Another Hand', arial, sans-serif;
+    font-size: 3rem;
+    color: red;
+}
+
 .container {
     background-color:darkorange;
     margin: 5px auto;
@@ -72,10 +78,4 @@ h1 {
     font-size: 40px;
     color: slateblue;
     padding-left: 25px;
-}
-
-#title {
-    font-family: 'Just Another Hand', arial, sans-serif;
-    font-size: 3rem;
-    color: red;
 }
