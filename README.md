@@ -1,6 +1,6 @@
 # SEI-1130-GA-Tower-of-Hanoi
 
-> ![screenshot](Screenshot.png)
+> ![screenshot](/assets/Screenshot.png)
  
 ## Technologies Used:  
 
@@ -27,6 +27,6 @@
 
 ## Wireframes:
 
-> ![wireframe screenshot](wireframe.png)
+> ![wireframe screenshot](/assets/wireframe.png)
 
 ## Unsolved Problems/Major Hurdles:
