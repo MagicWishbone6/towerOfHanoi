@@ -86,7 +86,6 @@ function checkWin(towerContents) {
     } else {
         return false
     }
-    console.log('ran')
 }
 
 brickDivs.forEach(div => div.addEventListener("click", selectBrick))
