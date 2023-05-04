@@ -79,7 +79,8 @@ function checkWin(towerContents) {
         }
     }
     if (win === true) {
-        setTimeout(() => window.alert('You win!'), 150)
+        setTimeout(() => alert('You win!'), 150)
+        console.log('win')
     }
 }
 
