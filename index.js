@@ -42,7 +42,7 @@ function selectBrick() {
     }
 }
 
-function moveBrick() {
+async function moveBrick() {
     let destinationTowerBricks = this.children
     let oldTop = destinationTowerBricks[0]
     if (selectedBrickDiv) {
@@ -62,26 +62,31 @@ function moveBrick() {
                     }
                 }
             })
-            checkWin([...this.children])
+            const handleWin = new Promise(res => {
+                res(checkWin([...this.children]))
+            })
+            handleWin.then(res => {
+                if (res) {
+                    setTimeout(() => alert('You win!'))
+                }
+            })
         }
     }
 }
 
 function checkWin(towerContents) {
-    let win = false
     if (towerContents.length === brickDivs.length) {
         for (let i = 0; i < towerContents.length; i++) {
             if (towerContents[i] !== brickDivs[i]) {
-                break
+                return false
             } else if (i === towerContents.length - 1 && towerContents[i] === brickDivs[i]) {
-                win = true
+                return true
             }
         }
+    } else {
+        return false
     }
-    if (win === true) {
-        setTimeout(() => alert('You win!'), 150)
-        console.log('win')
-    }
+    console.log('ran')
 }
 
 brickDivs.forEach(div => div.addEventListener("click", selectBrick))
