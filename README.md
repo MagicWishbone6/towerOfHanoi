@@ -1,5 +1,7 @@
 # SEI-1130-GA-Tower-of-Hanoi
 
+> See the hosted game [here](https://magicwishbone6.github.io/towerOfHanoi/).
+
 > ![screenshot](/assets/Screenshot.png)
  
 ## Technologies Used:  
