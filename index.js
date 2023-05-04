@@ -1,89 +1,89 @@
 import { reload } from "./utilities.js"
-import { resetButton, tower1, tower2, tower3 } from "./elements.js"
+import { resetButton } from "./elements.js";
 import { Brick } from "./Brick.js";
+import { Tower } from "./Tower.js";
 
 resetButton.addEventListener("click", reload, false);
 
-var brick1 = new Brick('brick1', 'tower1')
-var brick2 = new Brick('brick2', 'tower2')
-var brick3 = new Brick('brick3', 'tower3')
+const brick1 = new Brick('brick1', 'tower1')
+const brick2 = new Brick('brick2', 'tower2')
+const brick3 = new Brick('brick3', 'tower3')
 
-let brickDivs = [brick1.div, brick2.div, brick3.div]
-let bricks = [brick1, brick2, brick3]
+const brickDivs = [brick1.div, brick2.div, brick3.div]
+const bricks = [brick1, brick2, brick3]
 
 let selectedBrick = null
+let selectedBrickDiv = null
+
+const tower1 = new Tower('tower1')
+const tower2 = new Tower('tower2')
+const tower3 = new Tower('tower3')
+
+const towerDivs = [tower1.div, tower2.div, tower3.div]
 
 function selectBrick() {
-    if (selectedBrick) {
+    if (selectedBrickDiv) {
         brickDivs.forEach(div => div.style.borderColor = "crimson")
         bricks.forEach(brick => {
             brick.isSelected = false
         })
+        selectedBrickDiv = null
         selectedBrick = null
     } else {
         this.style.borderColor = "orange"
-        selectedBrick = this
+        selectedBrickDiv = this
         bricks.forEach(brick => {
-            if (brick.id === selectedBrick.id) {
+            if (brick.id === selectedBrickDiv.id) {
                 brick.isSelected = true
-                brick.originTower = this.parentElement.id
+                brick.originTower = selectedBrickDiv.parentElement.id
+                selectedBrick = brick
             }
         })
     }
 }
 
 function moveBrick() {
-    let oldTop = this.children[0]
-    if (selectedBrick) {
-        if (brickDivs.indexOf(selectedBrick) < brickDivs.indexOf(oldTop) || this.children.length === 0) {
-            if (selectedBrick.isOnTop === true) {
-                if (this.children.length > 0) {
-                    this.insertBefore(selectedBrick, oldTop)
-                    bricks.forEach(brick => {
-                        if (brick.id === oldTop.id) {
-                            brick.isOnTop = false
-                        }
-                    })
-                } else {
-                    this.appendChild(selectedBrick)
-                }
-            } else {
-                var allBricksInTower = []
-                bricks.forEach(brick => {
-                    if (brick.id === selectedBrick.id) {
-                        allBricksInTower = document.getElementById(`${brick.originTower}`).children
-                        allBricksInTower = [...allBricksInTower]
-                    }
-                })
-                let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrick) + 1)
+    let destinationTowerBricks = this.children
+    let oldTop = destinationTowerBricks[0]
+    if (selectedBrickDiv) {
+        if (brickDivs.indexOf(selectedBrickDiv) < brickDivs.indexOf(oldTop) || destinationTowerBricks.length === 0) {
+            const allBricksInTower = [...document.getElementById(`${selectedBrick.originTower}`).children]
+            let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrickDiv) + 1)
 
-                brickAndBricksAboveIt.forEach(brick => {
-                    if (brickDivs.indexOf(brick) <= brickDivs.indexOf(this.children[0])) {
-                        for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
-                            this.insertBefore(brickAndBricksAboveIt[i], this.children[0])
-                        }
-                        bricks.forEach(brick => {
-                            if (brick.id === oldTop.id) {
-                                brick.isOnTop = false
-                            }
-                        })
-                    } else if (this.children.length === 0) {
-                        for (let i = 0; i < brickAndBricksAboveIt.length; i++) {
-                            this.appendChild(brickAndBricksAboveIt[i])
-                        }
+            brickAndBricksAboveIt.forEach(brick => {
+                if (brickDivs.indexOf(brick) <= brickDivs.indexOf(oldTop)) {
+                    for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
+                        oldTop = this.children[0]
+                        this.insertBefore(brickAndBricksAboveIt[i], oldTop)
                     }
-                })
-            }
+                } else if (destinationTowerBricks.length === 0) {
+                    for (let i = 0; i < brickAndBricksAboveIt.length; i++) {
+                        this.appendChild(brickAndBricksAboveIt[i])
+                    }
+                }
+            })
+            checkWin([...this.children])
         }
     }
 }
 
-brick1.div.addEventListener("click", selectBrick)
-brick2.div.addEventListener("click", selectBrick)
-brick3.div.addEventListener("click", selectBrick)
+function checkWin(towerContents) {
+    let win = false
+    if (towerContents.length === brickDivs.length) {
+        for (let i = 0; i < towerContents.length; i++) {
+            if (towerContents[i] !== brickDivs[i]) {
+                break
+            } else if (i === towerContents.length - 1 && towerContents[i] === brickDivs[i]) {
+                win = true
+            }
+        }
+    }
+    if (win === true) {
+        setTimeout(() => window.alert('You win!'), 150)
+    }
+}
 
-tower1.addEventListener("click", moveBrick)
-tower2.addEventListener("click", moveBrick)
-tower3.addEventListener("click", moveBrick)
+brickDivs.forEach(div => div.addEventListener("click", selectBrick))
+towerDivs.forEach(div => div.addEventListener("click", moveBrick))
 
 // \(*^_^*)/
