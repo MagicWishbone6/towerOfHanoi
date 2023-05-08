@@ -1,7 +1,7 @@
-import { reload } from "./utilities.js"
-import { resetButton } from "./elements.js";
-import { Brick } from "./Brick.js";
-import { Tower } from "./Tower.js";
+import { reload } from "./scripts/utilities.js"
+import { resetButton } from "./scripts/elements.js";
+import { Brick } from "./scripts/Brick.js";
+import { Tower } from "./scripts/Tower.js";
 
 resetButton.addEventListener("click", reload, false);
 
