@@ -21,14 +21,15 @@ const tower3 = new Tower('tower3')
 
 const towerDivs = [tower1.div, tower2.div, tower3.div]
 
+function unSelectBrick() {
+    bricks.forEach(brick => brick.removeSelection())
+    selectedBrickDiv = null
+    selectedBrick = null
+}
+
 function selectBrick() {
     if (selectedBrickDiv) {
-        brickDivs.forEach(div => div.style.borderColor = "crimson")
-        bricks.forEach(brick => {
-            brick.isSelected = false
-        })
-        selectedBrickDiv = null
-        selectedBrick = null
+        unSelectBrick()
     } else {
         this.style.borderColor = "orange"
         selectedBrickDiv = this
@@ -67,7 +68,8 @@ async function moveBrick() {
             })
             handleWin.then(res => {
                 if (res) {
-                    setTimeout(() => alert('You win!'))
+                    unSelectBrick()
+                    setTimeout(() => alert('You win!'), 150)
                 }
             })
         }

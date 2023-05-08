@@ -5,4 +5,9 @@ export class Brick {
         this.div = document.querySelector(`#${id}`)
         this.originTower = originTower
     }
+
+    removeSelection() {
+        this.div.style.borderColor = "crimson"
+        this.isSelected = false
+    }
 }
