@@ -9,32 +9,19 @@
 <body>
     <h1>you are playing <span id='title'>Tower of Hanoi</span></h1>
     <div class="container">
-        <div class="game">
-            <div class="tower" id="tower1">
-                <div class="brick" id="brick1">
-                    <div class="number" id="1">
-                        <h2>1</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="tower" id="tower2">
-                <div class="brick" id="brick2">
-                    <div class="number" id="2">
-                        <h2>2</h2>
-                    </div>
-                </div>
-            </div>
-            <div class="tower" id="tower3">
-                <div class="brick" id="brick3">
-                    <div class="number" id="3">
-                        <h2>3</h2>
-                    </div>
-                </div>
-            </div>
+        <div id="game">
         </div>
     </div>
     <div id="controls">
-        <input type="button" value="Reset" id="resetButton" href="">
+        <div>
+            <input type="button" value="Reset" id="resetButton" href="">
+        </div>
+        <p id="levelsLabel">Choose a level:</p>
+        <div>
+            <input type="button" value="1" id="level1Button" class="levelButton" href="">
+            <input type="button" value="2" id="level2Button" class="levelButton" href="">
+            <input type="button" value="3" id="level3Button" class="levelButton" href="">
+        </div>
     </div>    
     <script src="index.js" type="module"></script>
 </body>

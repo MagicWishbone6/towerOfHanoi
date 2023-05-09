@@ -1,25 +1,57 @@
-import { reload } from "./scripts/utilities.js"
-import { resetButton } from "./scripts/elements.js";
+import { createElement, reload } from "./scripts/utilities.js"
+import { resetButton, level1Button, level2Button, level3Button } from "./scripts/elements.js";
 import { Brick } from "./scripts/Brick.js";
 import { Tower } from "./scripts/Tower.js";
 
 resetButton.addEventListener("click", reload, false);
 
-const brick1 = new Brick('brick1', 'tower1')
-const brick2 = new Brick('brick2', 'tower2')
-const brick3 = new Brick('brick3', 'tower3')
-
-const brickDivs = [brick1.div, brick2.div, brick3.div]
-const bricks = [brick1, brick2, brick3]
-
 let selectedBrick = null
 let selectedBrickDiv = null
 
-const tower1 = new Tower('tower1')
-const tower2 = new Tower('tower2')
-const tower3 = new Tower('tower3')
+let brickDivs = []
+let towerDivs = []
+let bricks = []
 
-const towerDivs = [tower1.div, tower2.div, tower3.div]
+let level = 1
+
+function createTowerWithStartingBrick(key) {
+    const game = document.querySelector('#game')
+    const towerDiv = createElement(key, 'tower')
+    const brickDiv = createElement(key, 'brick')
+    const label = createElement(key, 'label')
+    brickDiv.appendChild(label)
+    towerDiv.appendChild(brickDiv)
+    game.appendChild(towerDiv)
+    const towerId = `tower${key}`
+    const brickId = `brick${key}`
+    const brick = new Brick(brickId, towerId)
+    const tower = new Tower(towerId)
+    bricks.push(brick)
+    brickDivs.push(brick.div)
+    towerDivs.push(tower.div)
+}
+
+function createStartingTowers(amount) {
+    for (let k = 1; k <= amount; k++) {
+        createTowerWithStartingBrick(k)
+    }
+}
+
+function setupLevel(level) {
+    switch(level) {
+        case 1:
+            createStartingTowers(3)
+            break
+        case 2:
+            createStartingTowers(4)
+            break
+        case 3:
+            createStartingTowers(5)
+            break
+    }
+    brickDivs.forEach(div => div.addEventListener("click", selectBrick))
+    towerDivs.forEach(div => div.addEventListener("click", moveBrick))
+}
 
 function unSelectBrick() {
     bricks.forEach(brick => brick.removeSelection())
@@ -44,18 +76,18 @@ function selectBrick() {
 }
 
 async function moveBrick() {
-    let destinationTowerBricks = this.children
+    const destinationTowerBricks = this.children
     let oldTop = destinationTowerBricks[0]
     if (selectedBrickDiv) {
         if (brickDivs.indexOf(selectedBrickDiv) < brickDivs.indexOf(oldTop) || destinationTowerBricks.length === 0) {
-            const allBricksInTower = [...document.getElementById(`${selectedBrick.originTower}`).children]
-            let brickAndBricksAboveIt = allBricksInTower.slice(0, allBricksInTower.indexOf(selectedBrickDiv) + 1)
+            const allBricksInOriginTower = [...document.getElementById(`${selectedBrick.originTower}`).children]
+            let brickAndBricksAboveIt = allBricksInOriginTower.slice(0, allBricksInOriginTower.indexOf(selectedBrickDiv) + 1)
 
             brickAndBricksAboveIt.forEach(brick => {
                 if (brickDivs.indexOf(brick) <= brickDivs.indexOf(oldTop)) {
                     for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
-                        oldTop = this.children[0]
                         this.insertBefore(brickAndBricksAboveIt[i], oldTop)
+                        oldTop = this.children[0]
                     }
                 } else if (destinationTowerBricks.length === 0) {
                     for (let i = 0; i < brickAndBricksAboveIt.length; i++) {
@@ -67,8 +99,8 @@ async function moveBrick() {
                 res(checkWin([...this.children]))
             })
             handleWin.then(res => {
+                unSelectBrick()
                 if (res) {
-                    unSelectBrick()
                     setTimeout(() => alert('You win!'), 150)
                 }
             })
@@ -90,7 +122,38 @@ function checkWin(towerContents) {
     }
 }
 
-brickDivs.forEach(div => div.addEventListener("click", selectBrick))
-towerDivs.forEach(div => div.addEventListener("click", moveBrick))
+function changeLevel(newLevel) {
+    clearBricksAndTowers()
+    level = newLevel
+    setupLevel(level)
+}
+
+function changeToLevel2() {
+    changeLevel(2)
+}
+
+function changeToLevel3() {
+    changeLevel(3)
+}
+
+function changeToLevel1() {
+    changeLevel(1)
+}
+
+function clearBricksAndTowers() {
+    let towers = document.getElementsByClassName('tower')
+    while (towers[0]) {
+        towers[0].parentNode.removeChild(towers[0])
+    }
+    brickDivs = []
+    towerDivs = []
+    bricks = []
+}
+
+setupLevel(level)
+
+level1Button.addEventListener("click", changeToLevel1)
+level2Button.addEventListener("click", changeToLevel2)
+level3Button.addEventListener("click", changeToLevel3)
 
 // \(*^_^*)/
