@@ -2,7 +2,7 @@
 
 > See the hosted game [here](https://magicwishbone6.github.io/towerOfHanoi/).
 
-> ![screenshot](/assets/Screenshot.png)
+> ![screenshot](/assets/screenshot.png)
  
 ## Technologies Used:  
 
