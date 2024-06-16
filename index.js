@@ -124,20 +124,7 @@ function checkWin(towerContents) {
 
 function changeLevel(newLevel) {
     clearBricksAndTowers()
-    level = newLevel
-    setupLevel(level)
-}
-
-function changeToLevel2() {
-    changeLevel(2)
-}
-
-function changeToLevel3() {
-    changeLevel(3)
-}
-
-function changeToLevel1() {
-    changeLevel(1)
+    setupLevel(newLevel)
 }
 
 function clearBricksAndTowers() {
@@ -152,8 +139,8 @@ function clearBricksAndTowers() {
 
 setupLevel(level)
 
-level1Button.addEventListener("click", changeToLevel1)
-level2Button.addEventListener("click", changeToLevel2)
-level3Button.addEventListener("click", changeToLevel3)
+level1Button.addEventListener("click", () => changeLevel(1))
+level2Button.addEventListener("click", () => changeLevel(2))
+level3Button.addEventListener("click", () => changeLevel(3))
 
 // \(*^_^*)/
