@@ -12,7 +12,8 @@ h1 {
 #title {
     font-family: 'Just Another Hand', arial, sans-serif;
     font-size: 4rem;
-    color: red;
+    color: rgb(241, 4, 8);
+    text-shadow: 2px 2px 3px rgb(108, 65, 1);
 }
 
 .container {
@@ -21,7 +22,6 @@ h1 {
     padding: 5px;
     border-radius: 2px;
     max-width: 95vw;
-    box-shadow: 2px 1px 3px #6a132e;
 }
 
 #game {
@@ -88,4 +88,8 @@ h1 {
 
 #levelsLabel {
     margin-left: 10px;
+}
+
+.shadow {
+    box-shadow: 2px 2px 3px #6a132e;
 }

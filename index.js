@@ -1,4 +1,4 @@
-import { createElement, reload } from "./scripts/utilities.js"
+import { reload } from "./scripts/utilities.js"
 import { resetButton, level1Button, level2Button, level3Button } from "./scripts/elements.js";
 import { Brick } from "./scripts/Brick.js";
 import { Tower } from "./scripts/Tower.js";
@@ -6,28 +6,16 @@ import { Tower } from "./scripts/Tower.js";
 resetButton.addEventListener("click", reload, false);
 
 let selectedBrick = null
-let selectedBrickDiv = null
-
-let brickDivs = []
 let towerDivs = []
 let bricks = []
-
 let level = 1
 
-function createTowerWithStartingBrick(key) {
-    const game = document.querySelector('#game')
-    const towerDiv = createElement(key, 'tower')
-    const brickDiv = createElement(key, 'brick')
-    const label = createElement(key, 'label')
-    brickDiv.appendChild(label)
-    towerDiv.appendChild(brickDiv)
-    game.appendChild(towerDiv)
-    const towerId = `tower${key}`
-    const brickId = `brick${key}`
-    const brick = new Brick(brickId, towerId)
-    const tower = new Tower(towerId)
+function createTowerWithStartingBrick(number) {
+    const tower = new Tower(number)
+    const brick = new Brick(number, `tower${number}`)
+    const towerDiv = tower.createDiv()
+    brick.createDiv(towerDiv)
     bricks.push(brick)
-    brickDivs.push(brick.div)
     towerDivs.push(tower.div)
 }
 
@@ -49,45 +37,37 @@ function setupLevel(level) {
             createStartingTowers(5)
             break
     }
-    brickDivs.forEach(div => div.addEventListener("click", selectBrick))
+    bricks.forEach(brick => brick.div.addEventListener("click", selectBrick))
     towerDivs.forEach(div => div.addEventListener("click", moveBrick))
 }
 
 function unSelectBrick() {
-    bricks.forEach(brick => brick.removeSelection())
-    selectedBrickDiv = null
+    bricks.forEach(brick => brick.unSelect())
     selectedBrick = null
 }
 
 function selectBrick() {
-    if (selectedBrickDiv) {
+    if (selectedBrick) {
         unSelectBrick()
     } else {
-        this.style.borderColor = "orange"
-        selectedBrickDiv = this
-        bricks.forEach(brick => {
-            if (brick.id === selectedBrickDiv.id) {
-                brick.isSelected = true
-                brick.originTower = selectedBrickDiv.parentElement.id
-                selectedBrick = brick
-            }
-        })
+        selectedBrick = bricks.find(brick => brick.id === this.id)
+        selectedBrick.select()
     }
 }
 
 async function moveBrick() {
     const destinationTowerBricks = this.children
-    let oldTop = destinationTowerBricks[0]
-    if (selectedBrickDiv) {
-        if (brickDivs.indexOf(selectedBrickDiv) < brickDivs.indexOf(oldTop) || destinationTowerBricks.length === 0) {
+    let topBrick = bricks.find(brick => destinationTowerBricks[0].id === brick.id)
+    if (selectedBrick) {
+        if (selectedBrick.number < topBrick.number || destinationTowerBricks.length === 0) {
             const allBricksInOriginTower = [...document.getElementById(`${selectedBrick.originTower}`).children]
-            let brickAndBricksAboveIt = allBricksInOriginTower.slice(0, allBricksInOriginTower.indexOf(selectedBrickDiv) + 1)
-
-            brickAndBricksAboveIt.forEach(brick => {
-                if (brickDivs.indexOf(brick) <= brickDivs.indexOf(oldTop)) {
+            let brickAndBricksAboveIt = allBricksInOriginTower.slice(0, allBricksInOriginTower.indexOf(selectedBrick.div) + 1)
+            brickAndBricksAboveIt.forEach(brickElement => {
+                const brick = bricks.find(brick => brick.id === brickElement.id)
+                if (brick.number <= topBrick.number) {
                     for (let i = brickAndBricksAboveIt.length - 1; i >= 0; i--) {
-                        this.insertBefore(brickAndBricksAboveIt[i], oldTop)
-                        oldTop = this.children[0]
+                        this.insertBefore(brickAndBricksAboveIt[i], topBrick.div)
+                        topBrick = bricks.find(brick => this.children[0].id === brick.id)
                     }
                 } else if (destinationTowerBricks.length === 0) {
                     for (let i = 0; i < brickAndBricksAboveIt.length; i++) {
@@ -109,11 +89,11 @@ async function moveBrick() {
 }
 
 function checkWin(towerContents) {
-    if (towerContents.length === brickDivs.length) {
+    if (towerContents.length === bricks.length) {
         for (let i = 0; i < towerContents.length; i++) {
-            if (towerContents[i] !== brickDivs[i]) {
+            if (towerContents[i] !== bricks[i].div) {
                 return false
-            } else if (i === towerContents.length - 1 && towerContents[i] === brickDivs[i]) {
+            } else if (i === towerContents.length - 1 && towerContents[i] === bricks[i].div) {
                 return true
             }
         }
@@ -132,7 +112,6 @@ function clearBricksAndTowers() {
     while (towers[0]) {
         towers[0].parentNode.removeChild(towers[0])
     }
-    brickDivs = []
     towerDivs = []
     bricks = []
 }

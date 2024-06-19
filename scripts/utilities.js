@@ -1,10 +1,10 @@
-export function createElement(key, type) {
+export function createElement(number, type) {
     const element = document.createElement('div')
-    element.setAttribute('id', `${type}${key}`)
+    element.setAttribute('id', `${type}${number}`)
     element.setAttribute('class', `${type}`)
     if (type === 'label') {
         const h2 = document.createElement('h2')
-        const text = document.createTextNode(`${key}`)
+        const text = document.createTextNode(`${number}`)
         element.appendChild(h2.appendChild(text))
     }
     return element
